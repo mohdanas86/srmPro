@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Facalty profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,{{ favicon  }}">
+    <!-- Boxicons CSS -->
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 550px;
+            margin: auto;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .input-group button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            width: auto;
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .profile-info table {
+            border: none;
+            margin: 0 auto;
+        }
+
+        .profile-info td {
+            padding-right: 30px;
+        }
+
+        td,
+        table {
+            padding: 10px;
+            border: solid 1px black;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+
+        <header style="padding-left: 40px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0b4d92;
+        color: white;
+        padding: 20px;">
+            <img src="data:image/png;base64,{{ logo  }}"
+                style="background-color: #fff; width: 100px; justify-content: left;">
+            <p style="padding-left: 20px; padding-right: 20px; align-items: center; "><b>SRM Group of Institutions</b>
+            </p>
+        </header><br>
+
+        <div class="container">
+            <p>Kindly update your details</p><br>
+            <div class="profile-info">
+                <table style="border: none; align-items: center;">
+                    <tr>
+                        <td style="border: none;"><b>Employee Name:</b> {{ data.name }}</td>
+                        <td style="border: none;"><b>Employee Id :</b> {{ data.Employee_id }}</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-container">
+                <div class="input-group">
+                    <table style="margin: auto;">
+                        <p style="text-align: center;">Personal Detials</p><br>
+                        <tr>
+                            <td><label>1.1</label></td>
+                            <td><label>Campus</label></td>
+                            <td>
+                                <select id="campus" name="campus" onchange="showOptions()">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="Ramapuram">Ramapuram</option>
+                                    <option value="Trichy">Trichy</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><label>1.2</label></td>
+                            <td><label>College name</label></td>
+                            <td>
+                                <select id="options" name="college_name"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>1.3</label></td>
+                            <td><label>Email Address</label></td>
+                            <td><input type="text" name="Email_Address" value="{{data.email}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.4</label></td>
+                            <td><label>Employee_id</label></td>
+                            <td><input type="text" name="Employee_id" value="{{data.Employee_id}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.5</label></td>
+                            <td><label>Department</label></td>
+                            <td><input type="text" name="Department" value="{{data.Department}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.6</label></td>
+                            <td><label>Name of the faculty</label></td>
+                            <td><input type="text" name="Name_of_the_faculty" value="{{data.name}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.7</label></td>
+                            <td><label>Gender</label></td>
+                            <td><select name="Gender" required>
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.8</label></td>
+                            <td><label>Date of Birth</label></td>
+                            <td><input type="date" name="Date_of_Birth" required></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.9</label></td>
+                            <td><label>Designation</label></td>
+                            <td><input type="text" name="Designation" value="{{data.Designation}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.10</label></td>
+                            <td><label>Year of joining</label></td>
+                            <td><input type="number" name="Year_of_joining" min="1985" max="2100"></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.11</label></td>
+                            <td><label>Teaching Experience <br>at SRM</label></td>
+                            <td><input type="text" name="SRM_experience_Year"></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.12</label></td>
+                            <td><label>Teaching Experience <br>at Other College</label></td>
+                            <td><input type="text" name="Other_college_experience_Year"></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.13</label></td>
+                            <td><label>Industry experience </label></td>
+                            <td><input type="text" name="industry_experience"></td>
+                        </tr>
+                        <tr>
+                            <td><label>1.14</label></td>
+                            <td><label>Passport size photo (Formal photo)</label></td>
+                            <td><input type="file" id="myfile" name="image_file" accept="image/*"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div><br>
+
+            <div class="form-container">
+                <div class="input-group">
+                    <table class="a" style="margin: auto;">
+                        <p style="text-align: center;">Qualification</p><br>
+                        <p>2.1: Undergraduate</p><br>
+                        <tr>
+                            <td><label>2.1.1</label></td>
+                            <td><label>Name of cource</label></td>
+                            <td><input type="text" name="ug"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.1.2</label></td>
+                            <td><label>Name of the University</label></td>
+                            <td><input type="text" name="Name_of_the_Universityug">
+                                &nbsp;
+                                <input type="text" name="ug_place" placeholder="University Place">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>2.1.3</label></td>
+                            <td><label>Percentage / CGPA</label></td>
+                            <td><input type="text" name="ug_percentage"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.1.4</label></td>
+                            <td><label>Mode</label></td>
+                            <td>
+                                <select id="ugmode" name="ugmode" onchange="showOptions_ugh()">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                </select><br>
+                                <select id="optionsM" name="parttime_modeug" style="display: none;">
+                                    <option value="Weekend">Weekend</option>
+                                    <option value="Correspondence / distance education">Correspondence / distance
+                                        education</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>2.1.5</label></td>
+                            <td><label>Period of study</label></td>
+                            <td><input type="text" name="ug_period"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.1.6</label></td>
+                            <td><label for="ugclass">Class</label></td>
+                            <td>
+                                <select id="ugclass" name="ugclass" onchange="showOptions_ugclass()">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="1st Class with Distinction">1st class with Distinction</option>
+                                    <option value="1st Class">1st Class</option>
+                                    <option value="2nd Class">2nd Class</option>
+                                    <option value="3rd Class">3rd Class</option>
+                                </select>
+
+                                <lable id="optionsuguc" style="display: none;"><br> University Rank:
+                                    <select name="ug_university_rank">
+                                        <option value="--Select--">--Select--</option>
+                                        <option value="yes">yes</option>
+                                        <option value="no">no</option>
+                                    </select>
+                                </lable><br>
+                                <lable id="optionsugrc" style="display: none;">College Rank:
+                                    <select name="ug_college_rank">
+                                        <option value="--Select--">--Select--</option>
+                                        <option value="yes">yes</option>
+                                        <option value="no">no</option>
+                                    </select>
+                                </lable>
+                            </td>
+                        </tr>
+                    </table> <br><br>
+
+                    <table class="a" style="margin: auto;">
+                        <p>2.2: Postgraduate</p><br>
+                        <tr>
+                            <td><label>2.2.1</label></td>
+                            <td><label>Nmae of cource</label></td>
+                            <td><input type="text" name="pg"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.2.2</label></td>
+                            <td><label>Name of the University</label></td>
+                            <td><input type="text" name="Name_of_the_Universitypg">
+                                &nbsp;
+                                <input type="text" name="pg_place" placeholder="University Place">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>2.2.3</label></td>
+                            <td><label>Percentage / CGPA</label></td>
+                            <td><input type="text" name="pg_percentage"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.2.4</label></td>
+                            <td><label>Mode</label></td>
+                            <td>
+                                <select id="pgmode" name="pgmode" onchange="showOptions_pgh()">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                </select><br>
+                                <select id="optionspM" name="parttime_modepg" style="display: none;">
+                                    <option value="Weekend">Weekend</option>
+                                    <option value="Correspondence / distance education">Correspondence / distance
+                                        education</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>2.2.5</label></td>
+                            <td><label>Period of study</label></td>
+                            <td><input type="text" name="pg_period"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.2.6</label></td>
+                            <td><label for="pgclass">Class</label></td>
+                            <td>
+                                <select id="pgclass" name="pgclass" onchange="showOptions_pgclass()">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="1st Class with Distinction">1st class with Distinction</option>
+                                    <option value="1st Class">1st Class</option>
+                                    <option value="2nd Class">2nd Class</option>
+                                    <option value="3rd Class">3rd Class</option>
+                                </select>
+
+                                <lable id="optionspguc" style="display: none;"><br> University Rank:
+                                    <select name="pg_university_rank">
+                                        <option value="--Select--">--Select--</option>
+                                        <option value="yes">yes</option>
+                                        <option value="no">no</option>
+                                    </select>
+                                </lable><br>
+                                <lable id="optionspgrc" style="display: none;">College Rank:
+                                    <select name="pg_college_rank">
+                                        <option value="--Select--">--Select--</option>
+                                        <option value="yes">yes</option>
+                                        <option value="no">no</option>
+                                    </select>
+                                </lable>
+                            </td>
+                        </tr>
+                    </table><br><br>
+
+                    <table class="a" style="margin: auto;">
+                        <p>2.3: Doctor of Philosophy</p><br>
+                        <tr>
+                            <td><label>2.3.1</label></td>
+                            <td><label>Name of cource</label></td>
+                            <td><input type="text" name="phd"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.3.2</label></td>
+                            <td><label>Name of the University</label></td>
+                            <td><input type="text" name="Name_of_the_Universityphd">
+                                &nbsp;
+                                <input type="text" name="phd_place" placeholder="University Place">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>2.3.3</label></td>
+                            <td><label>Period of study</label></td>
+                            <td><input type="text" name="phd_Duration"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.3.4</label></td>
+                            <td><label>Percentage / CGPA</label></td>
+                            <td><input type="text" name="phd_percentage"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.3.5</label></td>
+                            <td><label>Year of completion</label></td>
+                            <td><input type="text" name="Year_of_completion"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.3.6</label></td>
+                            <td><label>Mode</label></td>
+                            <td>
+                                <select id="phdmode" name="phdmode" onchange="showOptions_phdh()">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                </select><br>
+                                <select id="optionsphdM" name="fulltime_modephd" style="display: none;">
+                                    <option value="Stipend">Stipend</option>
+                                    <option value="Non Stipend">Non Stipend</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><br><br>
+
+                    <p>2.4: Diploma</p><br> <select id="choice_d" name="Diploma" required onchange="showHideContent()">
+                        <option value="default">--Select--</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <table id="diploma" class="form-container input-group" style="margin: auto; display: none;"><br><br>
+                        <tr>
+                            <td><label>2.4.1</label></td>
+                            <td><label>Name of the cource</label></td>
+                            <td><input type="text" name="name_of_the_cource"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.4.2</label></td>
+                            <td>Name of the College</td>
+                            <td>
+                                <input type="text" name="Name_of_the_college">
+                                &nbsp;
+                                <input type="text" name="phd_place" placeholder="University Place">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>2.4.3</label></td>
+                            <td>Percentage</td>
+                            <td><input type="text" name="diploma_Percentage"></td>
+                        </tr>
+                        <tr>
+                            <td><label>2.3</label></td>
+                            <td><label for="ugclass">Class</label></td>
+                            <td>
+                                <select id="dclass" name="dclass">
+                                    <option value="--Select--">--Select--</option>
+                                    <option value="1st Class">1st Class</option>
+                                    <option value="2nd Class">2nd Class</option>
+                                    <option value="3rd Class">3rd Class</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div><br>
+
+
+
+            <div class="form-container">
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <table>
+                        <p style="text-align: center;">Research Detials</p><br>
+                        <tr>
+                            <td><label>3.1</label></td>
+                            <td><label>Research Area</label></td>
+                            <td><input type="text" name="Research_Area"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.2</label></td>
+                            <td><label>Total no of indexed <br>journal paper</label></td>
+                            <td><input type="text" name="Total_No_of_papers_published"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.4</label></td>
+                            <td><label>No of Papers Published in <br>UGC Care Journal</label></td>
+                            <td><input type="text" name="No_of_Papers_Published_in_UGC_Care_Journal"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.5</label></td>
+                            <td><label>No of Papers Published in <br>Scopus Indexed Journal</label></td>
+                            <td><input type="text" name="No_of_Papers_Published_in_Scopus_Indexed_Journal"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.6</label></td>
+                            <td><label>No of Papers Published in <br>Web of Science Journal</label></td>
+                            <td><input type="text" name="No_of_Papers_Published_in_Web_of_Science_Journal"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.7</label></td>
+                            <td><label>SCI (including SCIE /ESCI)</label></td>
+                            <td><input type="text" name="SCI"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.8</label></td>
+                            <td><label>No of National Conference <br>Presented (International / National)</label></td>
+                            <td><input type="text" name="No_of_National_Conference_Presented"></td>
+                        </tr>
+                        <tr>
+                            <td><label>3.9</label></td>
+                            <td><label>No of papers published in <br>conference proceedings <br>with ISBN number</label>
+                            </td>
+                            <td><input type="text"
+                                    name="No_of_papers_published_in_conference_proceedings_with_ISBN_number">
+                            </td>
+                        </tr>
+                    </table><br>
+                </div>
+
+
+
+
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.10: Patent
+                        <select id="choice_p" name="Patent" required onchange="showHideContent_p()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div class="input-group" id="patent" style="display: none;"><br>
+                        <p style="text-align: center;">Patent detials</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_p" name="number" min="1" onchange="generateFields()">
+                        <div id="inputFields"></div>
+                    </div>
+                </div>
+
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.11: Books published
+                        <select id="choice_b" name="Books" required onchange="showHideContent_b()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="books" style="display: none;"><br>
+                        <p style="text-align: center;">Books published detials</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_b" name="number_b" min="1" onchange="generateFields_b()">
+                        <div id="inputFields_b"></div>
+                    </div><br>
+                </div>
+
+
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.12: FDP Attended
+                        <select id="choice_f" name="fdp_attended" required onchange="showHideContent_f()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="fdp" style="display: none;"><br>
+                        <p style="text-align: center;">FDP Attended details</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_f" name="number_f" min="1" onchange="generateFields_f()">
+                        <div id="inputFields_f"></div>
+                    </div><br>
+                </div>
+                <br>
+
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.13: Workshop Attended
+                        <select id="choice_w" name="workshop_attended" required onchange="showHideContent_w()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="workshop" style="display: none;"><br>
+                        <p style="text-align: center;">Workshop Attended details</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_w" name="number_w" min="1" onchange="generateFields_w()">
+                        <div id="inputFields_w"></div>
+                    </div><br>
+                </div>
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.14: Projects Applided
+                        <select id="choice_pr" name="projects_detials" required onchange="showHideContent_pr()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="projects" style="display: none;"><br>
+                        <p style="text-align: center;">Project applied details</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_pr" name="number_pr" min="1" onchange="generateFields_pr()">
+                        <div id="inputFields_pr"></div>
+                    </div><br>
+                </div>
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.15: Projects sanctioned
+                        <select id="choice_prs" name=" projects_sanctioned_detials" required
+                            onchange="showHideContent_prs()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="projects_s" style="display: none;"><br>
+                        <p style="text-align: center;">Project sanctioned details</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_prs" name="number_prs" min="1" onchange="generateFields_prs()">
+                        <div id="inputFields_prs"></div>
+                    </div><br>
+                </div>
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.16: Award Detials
+                        <select id="choice_a" name=" award_detials" required onchange="showHideContent_a()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="award" style="display: none;"><br>
+                        <p style="text-align: center;">Award details</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_a" name="number_a" min="1" onchange="generateFields_a()">
+                        <div id="inputFields_a"></div>
+                    </div><br>
+                </div>
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.17: Membership in professional bodies
+                        <select id="choice_m" name=" Membership_in_professional_bodies_Detials" required
+                            onchange="showHideContent_m()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="Membership" style="display: none;"><br>
+                        <p style="text-align: center;">Membership in professional bodies Detials</p><br>
+                        <label for="number">Enter a number:</label>
+                        <input type="number" id="number_m" name="number_m" min="1" onchange="generateFields_m()">
+                        <div id="inputFields_m"></div>
+                    </div><br>
+                </div>
+
+                <div class="input-group" style="
+                border-bottom: 1px solid black;
+                padding: 10px;">
+                    <label>3.18 Recognised as Research Supervisor
+                        <select id="choice_r" name=" Recognised_as_Research_Supervisor" required
+                            onchange="showHideContent_r()">
+                            <option value="default">--Select--</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select></label>
+                    <div id="research" style="display: none;"><br>
+                        <p style="text-align: center;">Recognised as Research Supervisor Detials</p><br>
+                        <label for="recognizedBy">Recognised by:</label>
+                        <input type="text" id="recognizedBy" name="Recognised_by"><br><br>
+
+                        <label for="yearRecognized">Year of Recognition:</label>
+                        <input type="text" id="yearRecognized" name="Yr_of_Recognised"><br><br>
+
+                        <label for="scholarCompleted">No. of Scholars Completed:</label>
+                        <input type="text" id="scholarCompleted" name="No_of_scholar_completed"><br><br>
+
+                        <label for="scholarGuiding">No. of Scholars Guiding:</label>
+                        <input type="text" id="scholarGuiding" name="No_of_scholar_guiding"><br><br>
+
+                        <label for="fullTimeScholar">No. of Full-time Scholars:</label>
+                        <input type="text" id="fullTimeScholar" name="No_of_full_time_scholar"><br><br>
+
+                        <label for="partTimeScholar">No. of Part-time Scholars:</label>
+                        <input type="text" id="partTimeScholar" name="No_of_part_time_scholar"><br><br>
+
+                        <label for="internalScholar">No. of Internal Scholars (Part-time):</label>
+                        <input type="text" id="internalScholar" name="No_of_internal_scholar"><br><br>
+
+                        <label for="externalScholar">No. of External Scholars (Part-time):</label>
+                        <input type="text" id="externalScholar" name="No_of_external_scholar"><br><br>
+
+                    </div><br>
+                </div>
+
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit" value="submit" class="button" style="background-color: #0b4d92; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    border-radius: 4px;">
+                </div>
+
+
+
+            </div><br>
+
+        </form>
+    </div>
+
+    <script>
+
+        window.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                e.preventDefault(); // Prevent opening browser view source
+                alert("Sorry, you can't view source codes!");
+            }
+        });
+
+        //display five field if the user click yes
+        function showOrHideFields() {
+            var choice = document.getElementById("choice").value;
+            var inputFields = document.getElementById("inputFields");
+
+            if (choice === "yes") {
+                inputFields.classList.remove("hidden");
+            } else {
+                inputFields.classList.add("hidden")
+            }
+        }
+
+        function showHideContent() {
+            var selection = document.getElementById("choice_d").value;
+            var contentDiv = document.getElementById("diploma");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function showHideContent_p() {
+            var selection = document.getElementById("choice_p").value;
+            var contentDiv = document.getElementById("patent");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields() {
+            var num = document.getElementById("number_p").value;
+            var container = document.getElementById("inputFields");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Patent" + (i + 1) + ": ";
+                container.appendChild(label);
+                container.appendChild(document.createElement("br"));
+
+                // Adding radio buttons
+                var radioDiv = document.createElement("div");
+                var radioLabel = document.createElement("label");
+                radioLabel.textContent = "Status: ";
+                radioDiv.appendChild(radioLabel);
+
+                var statuses = ["Published", "Granted", "Commercialized"];
+                for (var j = 0; j < statuses.length; j++) {
+                    var radioInput = document.createElement("input");
+                    radioInput.type = "radio";
+                    radioInput.name = "Patent_status" + (i + 1);
+                    radioInput.value = statuses[j];
+                    radioDiv.appendChild(radioInput);
+
+                    var radioInputLabel = document.createElement("label");
+                    radioInputLabel.textContent = statuses[j];
+                    radioDiv.appendChild(radioInputLabel);
+                }
+
+                container.appendChild(radioDiv);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "patent_name" + (i + 1);
+                input.placeholder = "Name of the patent";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "investieater" + (i + 1);
+                input.placeholder = "Name of Investigator";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "" + (i + 1);
+                input.placeholder = "Patent commercialized";
+                container.appendChild(input);
+
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_b() {
+            var selection = document.getElementById("choice_b").value;
+            var contentDiv = document.getElementById("books");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_b() {
+            var num = document.getElementById("number_b").value;
+            var container = document.getElementById("inputFields_b");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Book" + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Book_Title" + (i + 1);
+                input.placeholder = "Book Title";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Book_publisher_name" + (i + 1);
+                input.placeholder = "Author's name as per order";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "isbn_number" + (i + 1);
+                input.placeholder = "ISBN Number";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Year_of_publication" + (i + 1);
+                input.placeholder = "Year of publication ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Chapters" + (i + 1);
+                input.placeholder = "Chapters ";
+                container.appendChild(input);
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_f() {
+            var selection = document.getElementById("choice_f").value;
+            var contentDiv = document.getElementById("fdp");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_f() {
+            var num = document.getElementById("number_f").value;
+            var container = document.getElementById("inputFields_f");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "FDP " + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Name_of_the_fdp" + (i + 1);
+                input.placeholder = "Name of the FDP";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Duration" + (i + 1);
+                input.placeholder = "Period";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Organized_by" + (i + 1);
+                input.placeholder = "Organized by ( University / place) ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Sponsored_by" + (i + 1);
+                input.placeholder = "Sponsored by ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "mode" + (i + 1);
+                input.placeholder = "Physical or online";
+                container.appendChild(input);
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_w() {
+            var selection = document.getElementById("choice_w").value;
+            var contentDiv = document.getElementById("workshop");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_w() {
+            var num = document.getElementById("number_w").value;
+            var container = document.getElementById("inputFields_w");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Workshop " + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Name_of_the_workshop" + (i + 1);
+                input.placeholder = "Name of the workshop";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Duration" + (i + 1);
+                input.placeholder = "Period";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Organized_by" + (i + 1);
+                input.placeholder = "Organized by ( University / place) ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Sponsored_by" + (i + 1);
+                input.placeholder = "Sponsored by ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "mode" + (i + 1);
+                input.placeholder = "Physical or online";
+                container.appendChild(input);
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_pr() {
+            var selection = document.getElementById("choice_pr").value;
+            var contentDiv = document.getElementById("projects");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_pr() {
+            var num = document.getElementById("number_pr").value;
+            var container = document.getElementById("inputFields_pr");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Project " + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Title_of_project" + (i + 1);
+                input.placeholder = "Title of project ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Applied_to" + (i + 1);
+                input.placeholder = "Applied to ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Applied_Date" + (i + 1);
+                input.placeholder = "Applied Date (DD/MM/YYYY)  ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_prs() {
+            var selection = document.getElementById("choice_prs").value;
+            var contentDiv = document.getElementById("projects_s");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_prs() {
+            var num = document.getElementById("number_prs").value;
+            var container = document.getElementById("inputFields_prs");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Projects sanctioned " + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Title_of_projects" + (i + 1);
+                input.placeholder = "Title of project ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Sanctioned_by" + (i + 1);
+                input.placeholder = "Sanctioned by ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Position :";
+                container.appendChild(label);
+                var select = document.createElement("select");
+                select.name = "Position" + (i + 1);
+                var option1 = document.createElement("option");
+                option1.value = "PI";
+                option1.text = "PI";
+                select.appendChild(option1);
+                var option2 = document.createElement("option");
+                option2.value = "CO-PI";
+                option2.text = "CO-PI";
+                select.appendChild(option2);
+                container.appendChild(select);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Applied_dates" + (i + 1);
+                input.placeholder = "Applied date (DD/MM/YYYY) ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Sanctioned_date" + (i + 1);
+                input.placeholder = "Sanctioned date (DD/MM/YYYY)";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Total_amount_sanctioned" + (i + 1);
+                input.placeholder = "Total amount sanctioned  ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Amount_received" + (i + 1);
+                input.placeholder = "Amount received ( till date ) ";
+                container.appendChild(input);
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_a() {
+            var selection = document.getElementById("choice_a").value;
+            var contentDiv = document.getElementById("award");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_a() {
+            var num = document.getElementById("number_a").value;
+            var container = document.getElementById("inputFields_a");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Award " + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Name_of_the_award" + (i + 1);
+                input.placeholder = "Name of the award ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Title_of_the_awards" + (i + 1);
+                input.placeholder = "Title of the award ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Issued_by" + (i + 1);
+                input.placeholder = "Issued by ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Received_Date" + (i + 1);
+                input.placeholder = "Received Date (DD/MM/YYYY)";
+                container.appendChild(input);
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_m() {
+            var selection = document.getElementById("choice_m").value;
+            var contentDiv = document.getElementById("Membership");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function generateFields_m() {
+            var num = document.getElementById("number_m").value;
+            var container = document.getElementById("inputFields_m");
+
+            // Clear previous fields
+            container.innerHTML = "";
+
+            // Generate new input fields based on the entered number
+            for (var i = 0; i < num; i++) {
+                container.appendChild(document.createElement("br"));
+
+                var label = document.createElement("lable");
+                label.textContent = "Membership " + (i + 1) + ": ";
+                container.appendChild(label);
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Name_of_professional_chapter" + (i + 1);
+                input.placeholder = "Name of professional chapter";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Year_of_registration" + (i + 1);
+                input.placeholder = "Year of registration ";
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "membership_validity" + (i + 1);
+                input.placeholder = "Validity";
+                container.appendChild(input);
+
+
+                container.appendChild(document.createElement("br"));
+            }
+        }
+
+        function showHideContent_r() {
+            var selection = document.getElementById("choice_r").value;
+            var contentDiv = document.getElementById("research");
+
+            // Check the user's selection
+            if (selection === "yes") {
+                contentDiv.style.display = "block"; // Show the content
+            } else {
+                contentDiv.style.display = "none"; // Hide the content
+            }
+        }
+
+        function showOptions() {
+            var select = document.getElementById("campus");
+            var optionsSelect = document.getElementById("options");
+
+            // Clear previous options
+            optionsSelect.innerHTML = "";
+
+            if (select.value === "Ramapuram") {
+                // If user selects "Ramapuram"
+                var option1 = document.createElement("option");
+                option1.value = "S&H";
+                option1.text = "S&H";
+                optionsSelect.add(option1);
+
+                var option2 = document.createElement("option");
+                option2.value = "E&T";
+                option2.text = "E&T";
+                optionsSelect.add(option2);
+
+                var option3 = document.createElement("option");
+                option3.value = "SEAD";
+                option3.text = "SEAD";
+                optionsSelect.add(option3);
+
+                var option4 = document.createElement("option");
+                option4.value = "EEC";
+                option4.text = "EEC";
+                optionsSelect.add(option4);
+
+                var option5 = document.createElement("option");
+                option5.value = "Management studies";
+                option5.text = "Management studies";
+                optionsSelect.add(option5);
+
+                // Add more options as needed
+            } else if (select.value === "Trichy") {
+                // If user selects "Trichy"
+                var option1 = document.createElement("option");
+                option1.value = "TRPEC";
+                option1.text = "TRPEC";
+                optionsSelect.add(option1);
+
+                var option2 = document.createElement("option");
+                option2.value = "E&T";
+                option2.text = "E&T";
+                optionsSelect.add(option2);
+
+                var option3 = document.createElement("option");
+                option3.value = "S&H";
+                option3.text = "S&H";
+                optionsSelect.add(option3);
+
+                var option4 = document.createElement("option");
+                option4.value = "TASC";
+                option4.text = "TASC";
+                optionsSelect.add(option4);
+            } else {
+                var defaultOption = document.createElement("option");
+                defaultOption.text = "College";
+                optionsSelect.add(defaultOption);
+            }
+        } showOptions();
+
+        function showOptions_ugh() {
+            var selectionp = document.getElementById("ugmode").value;
+            var contentDivp = document.getElementById("optionsM");
+            console.log(selectionp)
+
+            // Check the user's selection
+            if (selectionp === "Part-time") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+        }
+
+        function showOptions_pgh() {
+            var selectionp = document.getElementById("pgmode").value;
+            var contentDivp = document.getElementById("optionspM");
+            console.log(selectionp)
+
+            // Check the user's selection
+            if (selectionp === "Part-time") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+        }
+
+        function showOptions_phdh() {
+            var selectionp = document.getElementById("phdmode").value;
+            var contentDivp = document.getElementById("optionsphdM");
+            console.log(selectionp)
+
+            // Check the user's selection
+            if (selectionp === "Full-time") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+        }
+
+        function showOptions_ugclass() {
+            var selectionp = document.getElementById("ugclass").value;
+            var contentDivp = document.getElementById("optionsuguc");
+
+            // Check the user's selection
+            if (selectionp === "1st Class with Distinction") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+
+            var contentDivp = document.getElementById("optionsugrc");
+
+            // Check the user's selection
+            if (selectionp === "1st Class with Distinction") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+        }
+
+        function showOptions_pgclass() {
+            var selectionp = document.getElementById("pgclass").value;
+            var contentDivp = document.getElementById("optionspguc");
+
+            // Check the user's selection
+            if (selectionp === "1st Class with Distinction") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+
+            var contentDivp = document.getElementById("optionspgrc");
+
+            // Check the user's selection
+            if (selectionp === "1st Class with Distinction") {
+                contentDivp.style.display = "block"; // Show the content
+            } else {
+                contentDivp.style.display = "none"; // Hide the content
+            }
+        }
+
+    </script>
+</body>
+
+</html>

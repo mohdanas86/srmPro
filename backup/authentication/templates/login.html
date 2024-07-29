@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,{{ favicon  }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .signup-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .signup-title {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            border: none;
+            border-bottom: 2px solid #0b4d92;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #0b4d92;
+        }
+
+        .btn-signup {
+            background-color: #0b4d92;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #ffffff;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-signup:hover {
+            background-color: #0b4d92;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="signup-container">
+            <a href="{% url 'login' %}"><img src="data:image/png;base64,{{ logo }}" alt="srm_logo" class="img-fluid" style="height: 100px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;"></a><br>
+            <h2 class="signup-title" style="font-family: 'Bedrock'">Login</h2>
+            {% if message %}
+            <p style="color: green;">{{ message }}</p>
+            {% endif %}
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control" name="Employee_id" placeholder="Employee_id" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-signup btn-block">Login</button>
+                <br> 
+                <p>Don't have an account? <a href="{% url 'signup' %}" style="color: #0b4d92;">Sign up</a></p>
+                <p>Forgot your password? <a href="{% url 'forgot_password' %}" style="color: #0b4d92;">Reset Password</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                e.preventDefault(); // Prevent opening browser view source
+                alert("Sorry, you can't view source codes!");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Staff</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,{{ favicon  }}">
+    <!-- Boxicons CSS -->
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <style>
+        /* Import Google font - Poppins */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+
+        /* Define styles for the columns */
+        .col {
+            flex: 0 0 calc(33.33% - 20px);
+            /* Adjust the width as needed, considering margin */
+            margin: 0 10px;
+            /* Add margin for spacing between columns */
+        }
+
+        /* Center the columns horizontally */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+
+        /* Add more specific styles as needed */
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eef5fe;
+        }
+
+        select {
+            background-color: #f2f2f2;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        select:focus {
+            border-color: #007bff;
+        }
+
+        .button {
+            background-color: #09548a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: white;
+            color: black;
+        }
+
+
+
+        /* Pre css */
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav_image {
+            display: flex;
+            min-width: 55px;
+            justify-content: center;
+        }
+
+        .nav_image img {
+            height: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 270px;
+            background: #fff;
+            padding: 15px 10px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.close {
+            width: calc(55px + 20px);
+        }
+
+        .logo_name {
+            font-size: 22px;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .logo_name,
+        .sidebar.close #lock-icon,
+        .sidebar.close #sidebar-close {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #lock-icon,
+        #sidebar-close {
+            padding: 10px;
+            color: #0b4d92;
+            font-size: 25px;
+            cursor: pointer;
+            margin-left: -4px;
+            transition: all 0.3s ease;
+        }
+
+        #lock-icon {
+            color: #aaa;
+        }
+
+        .sidebar.locked #lock-icon {
+            color: #0b4d92;
+        }
+
+        #sidebar-close {
+            display: none;
+            color: #333;
+        }
+
+        .menu_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 40px;
+            overflow-y: auto;
+            height: calc(100% - 82px);
+        }
+
+        .menu_container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu_title {
+            position: relative;
+            height: 50px;
+            width: 55px;
+        }
+
+        .menu_title .title {
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .title {
+            opacity: 0;
+        }
+
+        .menu_title .line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 3px;
+            width: 20px;
+            border-radius: 25px;
+            background: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .menu_title .line {
+            opacity: 0;
+        }
+
+        .sidebar.close .line {
+            opacity: 1;
+        }
+
+        .item {
+            list-style: none;
+        }
+
+        .link {
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: #707070;
+        }
+
+        .link:hover {
+            color: #fff;
+            background-color: #0b4d92;
+        }
+
+        .link span {
+            white-space: nowrap;
+        }
+
+        .link i {
+            height: 50px;
+            min-width: 55px;
+            display: flex;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .sidebar_profile {
+            padding-top: 15px;
+            margin-top: 15px;
+            gap: 15px;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar_profile .name {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .sidebar_profile .email {
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            max-width: 500px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 60%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 0 0 8px 8px;
+            justify-content: space-between;
+        }
+
+        #sidebar-open {
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 20px;
+            display: none;
+        }
+
+        .search_box {
+            height: 46px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #aaa;
+            outline: none;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .navbar img {
+            height: 40px;
+            width: 40px;
+            margin-left: 20px;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin: 50px auto;
+            background-color: #fff;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0b4d92;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 1100px) {
+            .navbar {
+                left: 65%;
+            }
+        }
+
+        @media screen and (min-width:992px) and (max-width:1023px) {
+            .section {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: 150px;
+                width: 50%;
+            }
+
+            .sectionM {
+                display: flex;
+                flex-direction: column;
+                justify-content: left;
+                align-items: center;
+            }
+        }
+
+        @media screen and (min-width:1023px) {
+            .section {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: 150px;
+                width: 350px;
+            }
+
+            .sectionM {
+                display: flex;
+                flex-direction: column;
+                justify-content: left;
+                align-items: center;
+            }
+
+            .section3 {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: 185px;
+                width: 50%;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .sidebar {
+                left: 0;
+                z-index: 1000;
+            }
+
+            .sidebar.close {
+                left: -100%;
+            }
+
+            #sidebar-close {
+                display: block;
+            }
+
+            #lock-icon {
+                display: none;
+            }
+
+            .navbar {
+                left: 0;
+                max-width: 100%;
+                transform: translateX(0%);
+            }
+
+            #sidebar-open {
+                display: block;
+            }
+
+            .section,
+            .section3 {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .sectionM {
+                text-align: left;
+            }
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            text-align: left;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="text-align: center;">
+
+        <header style="padding-left: 40px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0b4d92;
+        color: white;
+        padding: 20px;">
+            <div class="profile-info" style="margin-left: 20px; ">
+                <h1>HOD details</h1>
+            </div>
+        </header><br>
+
+        <div style="display: flex; justify-content: center;">
+            <button class="button" onclick="openPopup()"
+                style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;">Add
+                Staff</button>
+        </div>
+
+        <div id="popup">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Add Staff</h2><br>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Employee ID" name="nameInput">
+                <input type="text" placeholder="Name" name="positionInput">
+                <select name="departmentInput">
+                    <option value="" selected disabled>Departments</option>
+                    <option value="B.Sc Computer Science">B.Sc Computer Science</option>
+                    <option value="BCA">BCA</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="B.COM(CS)">B.COM(CS)</option>
+                    <option value="English & other Foreign Languages">English & other Foreign Languages</option>
+                    <option value="B.COM(ISM)">B.COM(ISM)</option>
+                    <option value="B.COM(hons)">B.COM(hons)</option>
+                    <option value="B.A Journalism and Mass Communication">B.A Journalism and Mass Communication</option>
+                    <option value="B.COM(2nd shift)">B.COM(2nd shift)</option>
+                    <option value="B.COM(A&F)">B.COM(A&F)</option>
+                    <option value="MCA">MCA</option>
+                    <option value="Film Technology">Film Technology</option>
+                    <option value="B.COM">B.COM</option>
+                    <option value="B.Sc - Bio Technology">B.Sc - Bio Technology</option>
+                    <option value="B.Sc - Viscom">B.Sc - Viscom</option>
+                    <option value="B.Sc Fashion Designing">B.Sc Fashion Designing</option>
+                </select>
+                <input type="text" value="HOD" readonly name="DesignationInput">
+                <input type="text" placeholder="Email"  name="emailInput">
+                <button class="button">Add</button>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="sectionM">
+                <section class="section" style="height: auto; width: auto;">
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Employee_id</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in data %}
+                            <tr>
+                                <td>{{ i.Employee_id }}</td>
+                                <td>{{ i.name }}</td>
+                                <td>{{ i.Department }}</td>
+                                <td>
+                                    <button type="button" onclick="showModal('{{ i.Employee_id }}')" class="button">View Details</button>
+                                </td>
+                            </tr>
+                
+                            <!-- Modal for each staff member -->
+                            <div id="modal{{ i.Employee_id }}" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" onclick="closeModal('{{ i.Employee_id }}')">&times;</span>
+                                    <p><strong>ID:</strong> {{ i.Employee_id }}</p>
+                                    <p><strong>Name:</strong> {{ i.name }}</p>
+                                    <p><strong>Email:</strong> {{ i.email }}</p>
+                                    <div style="display: flex; justify-content: center;">
+                                        <a href="{% url 'dean' %}"
+                                            style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;"
+                                            class="button">Full detials</a>&nbsp; &nbsp; &nbsp; &nbsp; 
+                                        <a href="{% url 'staff_del' employee_id=i.Employee_id %}"
+                                            style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;"
+                                            class="button">Delete Staff</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+                
+            </div><br>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <a href="{% url 'dean' %}"
+                style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;"
+                class="button">Back</a>
+        </div>
+
+
+
+        <script>
+            // Selecting the sidebar and buttons
+            const sidebar = document.querySelector(".sidebar");
+            const sidebarOpenBtn = document.querySelector("#sidebar-open");
+            const sidebarCloseBtn = document.querySelector("#sidebar-close");
+            const sidebarLockBtn = document.querySelector("#lock-icon");
+
+            // Function to toggle the lock state of the sidebar
+            const toggleLock = () => {
+                sidebar.classList.toggle("locked");
+                // If the sidebar is not locked
+                if (!sidebar.classList.contains("locked")) {
+                    sidebar.classList.add("hoverable");
+                    sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+                } else {
+                    sidebar.classList.remove("hoverable");
+                    sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+                }
+            };
+
+            // Function to hide the sidebar when the mouse leaves
+            const hideSidebar = () => {
+                if (sidebar.classList.contains("hoverable")) {
+                    sidebar.classList.add("close");
+                }
+            };
+
+            // Function to show the sidebar when the mouse enter
+            const showSidebar = () => {
+                if (sidebar.classList.contains("hoverable")) {
+                    sidebar.classList.remove("close");
+                }
+            };
+
+            // Function to show and hide the sidebar
+            const toggleSidebar = () => {
+                sidebar.classList.toggle("close");
+            };
+
+            // If the window width is less than 800px, close the sidebar and remove hoverability and lock
+            if (window.innerWidth < 800) {
+                sidebar.classList.add("close");
+                sidebar.classList.remove("locked");
+                sidebar.classList.remove("hoverable");
+            }
+
+            // Adding event listeners to buttons and sidebar for the corresponding actions
+            sidebarLockBtn.addEventListener("click", toggleLock);
+            sidebar.addEventListener("mouseleave", hideSidebar);
+            sidebar.addEventListener("mouseenter", showSidebar);
+            sidebarOpenBtn.addEventListener("click", toggleSidebar);
+            sidebarCloseBtn.addEventListener("click", toggleSidebar);
+
+            // Show date and time
+            function displayDateAndTime() {
+                const currentDate = new Date();
+                const date = currentDate.toLocaleDateString();
+                const time = currentDate.toLocaleTimeString();
+                document.getElementById('date').textContent = date;
+                document.getElementById('time').textContent = time;
+            } setInterval(displayDateAndTime, 1000);
+
+            window.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                    e.preventDefault(); // Prevent opening browser view source
+                    alert("Sorry, you can't view source codes!");
+                }
+            });
+
+            function openPopup() {
+                document.getElementById("popup").style.display = "block";
+            }
+
+            function closePopup() {
+                document.getElementById("popup").style.display = "none";
+            }
+
+            function addStaff() {
+                // Get values from input fields
+                var name = document.getElementById("nameInput").value;
+                var position = document.getElementById("positionInput").value;
+                var department = document.getElementById("departmentInput").value;
+
+                // Perform any additional logic with the data (e.g., send it to a server)
+
+                // Close the popup
+                closePopup();
+            }
+
+            function showModal(id) {
+        document.getElementById('modal' + id).style.display = 'block';
+    }
+
+    function closeModal(id) {
+        document.getElementById('modal' + id).style.display = 'none';
+    }
+
+    // Close modal if clicked outside of the content
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = 'none';
+            }
+        }
+    }
+
+        </script>
+</body>
+
+</html>

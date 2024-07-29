@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Apprisal form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,{{ favicon  }}">
+    <!-- Boxicons CSS -->
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <style>
+        /* Import Google font - Poppins */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eef5fe;
+        }
+
+        select {
+            background-color: #f2f2f2;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        select:focus {
+            border-color: #007bff;
+        }
+
+        .button {
+            background-color: #09548a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: white;
+            color: black;
+        }
+
+
+
+        /* Pre css */
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav_image {
+            display: flex;
+            min-width: 55px;
+            justify-content: center;
+        }
+
+        .nav_image img {
+            height: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 270px;
+            background: #fff;
+            padding: 15px 10px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.close {
+            width: calc(55px + 20px);
+        }
+
+        .logo_name {
+            font-size: 22px;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .logo_name,
+        .sidebar.close #lock-icon,
+        .sidebar.close #sidebar-close {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #lock-icon,
+        #sidebar-close {
+            padding: 10px;
+            color: #0b4d92;
+            font-size: 25px;
+            cursor: pointer;
+            margin-left: -4px;
+            transition: all 0.3s ease;
+        }
+
+        #lock-icon {
+            color: #aaa;
+        }
+
+        .sidebar.locked #lock-icon {
+            color: #0b4d92;
+        }
+
+        #sidebar-close {
+            display: none;
+            color: #333;
+        }
+
+        .menu_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 40px;
+            overflow-y: auto;
+            height: calc(100% - 82px);
+        }
+
+        .menu_container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu_title {
+            position: relative;
+            height: 50px;
+            width: 55px;
+        }
+
+        .menu_title .title {
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .title {
+            opacity: 0;
+        }
+
+        .menu_title .line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 3px;
+            width: 20px;
+            border-radius: 25px;
+            background: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .menu_title .line {
+            opacity: 0;
+        }
+
+        .sidebar.close .line {
+            opacity: 1;
+        }
+
+        .item {
+            list-style: none;
+        }
+
+        .link {
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: #707070;
+        }
+
+        .link:hover {
+            color: #fff;
+            background-color: #0b4d92;
+        }
+
+        .link span {
+            white-space: nowrap;
+        }
+
+        .link i {
+            height: 50px;
+            min-width: 55px;
+            display: flex;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .sidebar_profile {
+            padding-top: 15px;
+            margin-top: 15px;
+            gap: 15px;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar_profile .name {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .sidebar_profile .email {
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            max-width: 500px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 60%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 0 0 8px 8px;
+            justify-content: space-between;
+        }
+
+        #sidebar-open {
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 20px;
+            display: none;
+        }
+
+        .search_box {
+            height: 46px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #aaa;
+            outline: none;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .navbar img {
+            height: 40px;
+            width: 40px;
+            margin-left: 20px;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 1100px) {
+            .navbar {
+                left: 65%;
+            }
+        }
+
+        @media screen and (min-width:992px) and (max-width:1023px) {
+            .section {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: auto;
+                width: 50%;
+            }
+
+            .sectionM {
+                display: flex;
+                flex-direction: column;
+                justify-content: left;
+                align-items: center;
+            }
+        }
+
+        @media screen and (min-width:1023px) {
+            .section {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: auto;
+                width: 50%;
+            }
+
+            .sectionM {
+                display: flex;
+                flex-direction: column;
+                justify-content: left;
+                align-items: center;
+            }
+
+            .section3 {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: auto;
+                width: 50%;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .sidebar {
+                left: 0;
+                z-index: 1000;
+            }
+
+            .sidebar.close {
+                left: -100%;
+            }
+
+            #sidebar-close {
+                display: block;
+            }
+
+            #lock-icon {
+                display: none;
+            }
+
+            .navbar {
+                left: 0;
+                max-width: 100%;
+                transform: translateX(0%);
+            }
+
+            #sidebar-open {
+                display: block;
+            }
+
+            .section,
+            .section3 {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                height: auto;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .sectionM {
+                text-align: left;
+            }
+        }
+
+        table.table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table.table th,
+        table.table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table.table th {
+            background-color: #f2f2f2;
+        }
+
+        p.instruction {
+            font-size: 12px;
+            text-align: right;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        /* Hover effect */
+        p.instruction:hover {
+            color: #0b4d92;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar locked">
+        <div class="logo_items flex">
+            <span class="nav_image" style="margin-right: 10px;">
+                <img src="data:image/png;base64,{{ logo }}" alt="logo_img" />
+            </span>
+            <span class="logo_name" style="margin-right: 10px; font-family: 'Bedrock'">Staff portal </span>
+            <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+            <i class="bx bx-x" id="sidebar-close"></i>
+        </div>
+
+        <div class="menu_container">
+            <div class="menu_items">
+                <ul class="menu_item">
+                    <div class="menu_title flex">
+                        <span class="title">Menu</span>
+                        <span class="line"></span>
+                    </div>
+                    <li class="item">
+                        {% if data.Designation == "HOD" %}
+                        <a href="{% url 'head' %}" class="link flex">
+                            <i class="bx bx-home-alt"></i>
+                            <span>Home</span>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'home' %}" class="link flex">
+                            <i class="bx bx-home-alt"></i>
+                            <span>Home</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                    <li class="item">
+                        <a href="{% url 'appraisal' %}" class="link flex">
+                            <i class="bx bx-grid-alt"></i>
+                            <span>Apprisal Form</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="menu_item">
+                    <div class="menu_title flex">
+                        <span class="title">Details</span>
+                        <span class="line"></span>
+                    </div>
+                    <li class="item">
+                        <a href="{% url 'show_apprisal' %}" class="link flex">
+                            <i class="bx bx-folder"></i>
+                            <span>Apprisal form details</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar_profile flex">
+                <div class="data_text">
+
+                    <p id="date" style=" font-size: 15px; font-family: 'Bedrock';"></p>
+                    <p id="time" style="font-family: 'Bedrock'; font-size: 15px;"></p>
+
+                    <h6><a href="{% url 'logout' %}" class="btn btn-sm btn-book">Logout</a></h6>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="">
+        <i class="bx bx-menu" id="sidebar-open"></i>
+    </nav>
+
+    <div>
+
+        <header style="padding-left: 40px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0b4d92;
+        color: white;
+        padding: 20px;
+        text-align: center;">
+            <div class="profile-info" style="margin-left: 20px; ">
+                <h1>PROPOSED FACULTY MONTHLY PERFORMANCE SCORE</h1>
+                <p>Employee id : {{ data.Employee_id }}</p>
+            </div>
+        </header>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="sectionM">
+
+                <br>
+
+                <h3 style="text-align: center; color:#007bff"> (A) ACADEMIC / ADMINISTRATIVE CONTRIBUTIONS</h3>
+
+                <section class="section">
+                    <p style="text-align: center;">1. Academic Results (CIA, Unit test, End Sem etc.) - Pass %</p><br>
+                    <label for="Academic_Score_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="Academic_Score_cumulative"
+                        value="{{data.Academic_Score_cumulative}}" readonly><br>
+                    <label for="Academic_Score_achived">Achived (T-100%):</label>
+                    <input type="text" id="username" name="Academic_Score_achived" required><br>
+                    <select name="Academic_Score_stage" required>
+                        <option value="--Select--">--Select--</option>
+                        <option value="CIA">CIA</option>
+                        <option value="Unit test">Unit test</option>
+                        <option value="End sem">End sem</option>
+                    </select><br>
+                    <input type="file" name="Acadaemic_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section1')">Instruction</p>
+                    <table class="table" id="section1" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Academic Results (CIA, Unit test, End Sem etc.) - Pass %</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>100%</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>Average % &lt; 75 - Nil, 2 points for every 5 %</td>
+                        </tr>
+                    </table>
+
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">2. Online Courses Attended</p><br>
+                    <label for="course_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="course_cumulative" value="{{data.course_cumulative}}"
+                        readonly><br>
+                    <label for="course_achived">Achived (T-2):</label>
+                    <input type="text" id="username" name="course_achived" required><br>
+                    <select name="course_achived_name" required>
+                        <option value="--Select--">--Select--</option>
+                        <option value="NPTEL">NPTEL</option>
+                        <option value="MOOC">MOOC</option>
+                        <option value="SWAYAM">SWAYAM</option>
+                    </select><br>
+                    <input type="file" name="course_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section2')">Instruction</p>
+                    <table class="table" id="section2" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Online Courses Attended</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>NPTEL / MOOC/ SWAYAM / Course Completion Certificate & Other Online Courses Certificate
+                                thro' Examinations - 3 marks for each certification</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">3. FDP Attended</p><br>
+                    <label for="fdp_cumulative">FDP Cumulative:</label>
+                    <input type="text" id="username" name="fdp_cumulative" value="{{data.fdp_cumulative}}" readonly><br>
+                    <label for="fdp_week">FDP Week:</label>
+                    <input type="text" id="username" name="fdp_week" required><br>
+                    <label for="fdp_programs">FDP Programs:</label>
+                    <input type="text" id="username" name="fdp_programs" required><br>
+                    <input type="file" name="fdp_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section3')">Instruction</p>
+                    <table class="table" id="section3" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>FDP Attended</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>2.5 points for 2 weeks duration
+                                1.5 points for One week duration (not less than 6 days)Conducted by Regulating Agencies
+                                Sponsored
+                                Programme OR Universities, NOT by self -financing colleges</td>
+                        </tr>
+                    </table>
+
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">4. Counselling Students Performance Improvement</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="Counselling_cumulative"
+                        value="{{data.counselling_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Achived (T-100%):</label>
+                    <input type="text" id="username" name="Counselling_achived" required><br>
+                    <input type="file" name="counselling_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section4')">Instruction</p>
+                    <table class="table" id="section4" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Counselling Students Performance
+                                Improvement</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>100%</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>List of Alloted Students Approved by HOD
+                                Counselling Information in the Student History Card.
+                                One mark for each couselling session conducted
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">5. Online Student Feedback</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="Student_Feedback_cumulative"
+                        value="{{data.Student_Feedback_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Achived (T-10):</label>
+                    <input type="text" id="username" name="Student_Feedback_achived" required><br>
+                    <input type="file" name="Student_feedback_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section5')">Instruction</p>
+                    <table class="table" id="section5" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Online Student Feedback</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>8 out of 10 Scale</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>Average feedback < 8 - No score 8 and above, 1 point for every 0.5 Feedback score with
+                                    base value 1 from 8 Copy of End Semester Students Feedback from ERP</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">6. Perception Improvement : FDP/ Workshop/ Conf. / Branding event /
+                        online event / student event organized</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="precption_cumulative" value="{{data.precption_cumulative}}"
+                        readonly><br>
+                    <label for="Counselling_achived">Achived:</label>
+                    <select name="precption_achived">
+                        <option value="--Select--">--Select--</option>
+                        <option value="Convener">Convener</option>
+                        <option value="Co-convener">Co-convener</option>
+                        <option value="Committee Member">Committee Member</option>
+                    </select><br>
+                    <input type="file" name="precption_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section6')">Instruction</p>
+                    <table class="table" id="section6" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Perception Improvement : FDP/ Workshop/ Conf. / Branding event / online event / student
+                                event organized</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>Convener/Co-convener - 5 points
+                                Committee Member - 2 points
+                                For any Two Events
+                                Copy of the YouTube Thumbnail Poster
+                                Registered Participants List
+                                Event Report with Photos
+                                Participants Feedback
+                                Google Review by the Guest</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">7. Institutional Coordinators IQAC/EXAM Cell/Admissions/MOU</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="Institutional_Coordinators_cumulative"
+                        value="{{data.Institutional_Coordinators_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Achived (T-10):</label>
+                    <input type="text" id="username" name="Institutional_Coordinators_achived" required><br>
+                    <input type="file" name="Institutional_coordinators_proof" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section7')">Instruction</p>
+                    <table class="table" id="section7" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Institutional Coordinators
+                                IQAC/EXAM Cell/Admissions/
+                                MOU</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>Coordinators appointed by Dean</td>
+                        </tr>
+                    </table>
+                </section><br>
+
+                <h3 style="text-align: center; color:#007bff"> (B) RESEARCH PUBLICATIONS </h3>
+
+
+                <section class="section3">
+                    <p style="text-align: center;">8. Research Papers Published in SCI / WoS/ UGC CARE Indexed Journals
+                    </p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="research_paper_cumulative"
+                        value="{{data.research_paper_cumulative}}"><br>
+                    <label for="Counselling_cumulative">No of Paper:</label>
+                    <input type="text" id="username" name="no_of_Paper" required><br>
+                    <label for="Counselling_achived">Author position:</label>
+                    <select name="author_position">
+                        <option value="0">--Select--</option>
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                    </select><br>
+                    <input type="file" name="research_paper_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section8')">Instruction</p>
+                    <table class="table" id="section8" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Research Papers Published in SCI / WoS/ UGC CARE Indexed Journals</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>15 per Paper as first author or corresponding author for SCI/ WoS with reviewers
+                                comment.
+                                10 per Paper as Second author for SCI/ WoS with reviewers comment.
+                                10 per Paper as first author or corresponding author for UGC
+                                5 per Paper as 2nd author UGC</td>
+                        </tr>
+                    </table>
+                </section>
+
+
+                <section class="section3">
+                    <p style="text-align: center;">9. Conference Paper Presentation (Proceedings to be published by
+                        reputed publishers like Springer, Elsevier, IEEE etc. & listed in Scopus); Book Chapter/ Book
+                        Publication</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="paper_presentaion_cumulative"
+                        value="{{data.paper_presentaion_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">NO of paper:</label>
+                    <input type="text" id="username" name="no_of_paper" required><br>
+                    <label for="Counselling_achived">Paper presentaion type:</label>
+                    <select name="paper_presentaion_type">
+                        <option value="--Select--">--Select--</option>
+                        <option value="International Conference">International Conference</option>
+                        <option value="National Conference">National Conference</option>
+                    </select><br>
+                    <input type="file" name="paper_presentaion_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section9')">Instruction</p>
+                    <table class="table" id="section9" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Conference Paper Presentation (Proceedings to be published by reputed publishers like
+                                Springer, Elsevier, IEEE etc. & listed in Scopus); Book Chapter/ Book Publication</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>National Conference - 3
+                                International Conference - 4
+                                Copy of the Paper Presented with Certificate</td>
+                        </tr>
+                    </table>
+                </section><br>
+
+                <h3 style="text-align: center; color:#007bff"> (C) RESEARCH GUIDANCE / PROJECTS / CONSULTANCY </h3>
+
+
+                <section class="section3">
+                    <p style="text-align: center;">10. Research Projects sanctioned - External / Minor
+                        (Total amount received in the assessment year)</p><br>
+                    <label for="Counselling_cumulative">Research_project_sanctioned_cumulative:</label>
+                    <input type="text" id="username" name="Research_project_sanctioned_cumulative"
+                        value="{{data.Research_project_sanctioned_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">no_of_project:</label>
+                    <input type="text" id="username" name="no_of_project" required><br>
+                    <label for="Counselling_achived">value_of_the_project:</label>
+                    <input type="text" id="username" name="value_of_the_project" required><br>
+                    <label for="Counselling_achived">position:</label>
+                    <select name="position">
+                        <option value="--Select--">--Select--</option>
+                        <option value="PI">PI</option>
+                        <option value="CoPI">CoPI</option>
+                    </select><br>
+                    <input type="file" name="Research_project_sanctioned_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section10')">Instruction</p>
+                    <table class="table" id="section10" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Research Projects sanctioned - External / Minor
+                                (Total amount received in the assessment year)</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>
+                                <table border="1">
+                                    <tr>
+                                        <th></th>
+                                        <th>PI</th>
+                                        <th>CoPI</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Upto 5L</td>
+                                        <td>2.5</td>
+                                        <td>1.2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5L - 30L</td>
+                                        <td>4</td>
+                                        <td>2.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>30L - 60L</td>
+                                        <td>10</td>
+                                        <td>5</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">11. Research proposal - PAC Level
+                        (PI or CO-PI)</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="Research_proposal_cumulative"
+                        value="{{data.Research_proposal_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Proposal:</label>
+                    <input type="text" id="username" name="proposal" required><br>
+                    <input type="file" name="research_proposal_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section11')">Instruction</p>
+                    <table class="table" id="section11" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Research proposal - PAC Level
+                                (PI or CO-PI)</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>1.5 points for PAC Level</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">12. Consultancy</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="Consultancy_cumulative"
+                        value="{{data.Consultancy_cumulative}}" readonly><br>
+                    <label for="Counselling_cumulative">No of project:</label>
+                    <input type="text" id="username" name="No_of_project" required><br>
+                    <label for="Counselling_achived">Cost:</label>
+                    <input type="text" id="username" name="cost" required><br>
+                    <input type="file" name="Consultancy_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section12')">Instruction</p>
+                    <table class="table" id="section12" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Consultancy</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>Above 2L - 3
+                                Between 1L-2L - 1.5
+                                Between 10k & 1L - 1
+                                [If more than 1 person involved, the first two persons can claim the marks]</td>
+                        </tr>
+                    </table>
+                </section><br>
+
+                <h3 style="text-align: center; color:#007bff"> (D) CREATION OF ICT BASED TEACHING LEARNING PEDAGOGY AND
+                    CONTENT </h3>
+
+
+                <section class="section">
+                    <p style="text-align: center;">13. Use of Innovative Pedagogy with supporting documents (as per
+                        NAAC/NBA requirement) </p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="pedagogy_cumulative" value="{{data.pedagogy_cumulative}}"
+                        readonly><br>
+                    <label for="Counselling_cumulative">No of pedagogy:</label>
+                    <input type="text" id="username" name="no_of_pedagogy" required><br>
+                    <input type="file" name="pedagogy_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section13')">Instruction</p>
+                    <table class="table" id="section13" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Use of Innovative Pedagogy with supporting documents (as per NAAC/NBA requirement) </td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>0.5 per each initiative
+                                Report includes Name of the Pedagogy, Topic used for Pedagogy, Photos and Students
+                                discriptive Feedback on Pedagogy, Log Book Entry & Justification</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">14. Design of new curricula and courses/ new experiment / training
+                        module</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="inovative_cumulative" value="{{data.inovative_cumulative}}"
+                        readonly><br>
+                    <label for="Counselling_cumulative">Number of inovative:</label>
+                    <input type="text" id="username" name="number_of_inovative" required><br>
+                    <input type="file" name="inovative_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section14')">Instruction</p>
+                    <table class="table" id="section14" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>Design of new curricula and courses/ new experiment / training module</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>2.5</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>1.5 per each initiative
+                                Copy of the curriculum/ new experiment, Other than prescribed in the curriculum and
+                                syllabus</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">15. E-Content development</p><br>
+                    <label for="Counselling_cumulative">Cumulative:</label>
+                    <input type="text" id="username" name="E_Content_development_cumulative"
+                        value="{{data.E_Content_development_cumulative}}" readonly><br>
+                    <label for="Counselling_cumulative">No Of content developement:</label>
+                    <input type="text" id="username" name="no_Of_content_developement" required><br>
+                    <input type="file" name="E_content_proof" id="" accept="application/pdf">
+                    <p class="instruction" style="font-size: 17px; text-align: right;"
+                        onclick="toggleAccordion('section15')">Instruction</p>
+                    <table class="table" id="section15" style="display: none;"><br>
+                        <tr>
+                            <th>FUNCTIONAL AREAS</th>
+                            <td>E-Content development</td>
+                        </tr>
+                        <tr>
+                            <th>Target for the Academic year</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Proposed Score</th>
+                            <td>2.5</td>
+                        </tr>
+                        <tr>
+                            <th>Scoring Scheme</th>
+                            <td>1.5 for each full content
+                                Video / PPT / Infographic of syllabus uploaded in the College Youtube / Dept. Blog /
+                                Dept. App. Copy of Link with Topic & Youtube Thumbnail Poster / First Page of Blog / App
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section">
+                    <p style="text-align: center;">Commitment / Undertaking</p><br>
+                    <label>I will</label>
+                    <input type="text" id="username" name="i_will1" style="width: 80%;" required><br><br>
+                    <label>I will</label>
+                    <input type="text" id="username" name="i_will2" style="width: 80%;" required><br>
+                </section>
+            
+                <section class="section">
+                    <p style="text-align: center;">Additional Information / Explanation if any:</p><br>
+                    <textarea name="additional_information" style="width: 100%;" placeholder="Furnish information regarding Last Month Commitment Progress / Action Taken"></textarea>
+                </section>
+
+            </div>
+
+            {% if tdate >= 1 and tdate <= ldate %} 
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit" value="submit" class="button">
+                </div>
+            {% else %}
+                <p style="text-align: center;">This month appraisal form submission date is over. <br> Please contact the Admin
+                office.</p>
+
+            {% endif %}
+        </form><br><br><br>
+
+        <footer style="
+            text-align: center;
+            padding: 10px;
+            background-color: #0b4d92;
+            color: white;">
+            <p>Contact: {{ email }}</p>
+        </footer>
+    </div>
+
+    <script>
+        // Selecting the sidebar and buttons
+        const sidebar = document.querySelector(".sidebar");
+        const sidebarOpenBtn = document.querySelector("#sidebar-open");
+        const sidebarCloseBtn = document.querySelector("#sidebar-close");
+        const sidebarLockBtn = document.querySelector("#lock-icon");
+
+        // Function to toggle the lock state of the sidebar
+        const toggleLock = () => {
+            sidebar.classList.toggle("locked");
+            // If the sidebar is not locked
+            if (!sidebar.classList.contains("locked")) {
+                sidebar.classList.add("hoverable");
+                sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+            } else {
+                sidebar.classList.remove("hoverable");
+                sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+            }
+        };
+
+        // Function to hide the sidebar when the mouse leaves
+        const hideSidebar = () => {
+            if (sidebar.classList.contains("hoverable")) {
+                sidebar.classList.add("close");
+            }
+        };
+
+        // Function to show the sidebar when the mouse enter
+        const showSidebar = () => {
+            if (sidebar.classList.contains("hoverable")) {
+                sidebar.classList.remove("close");
+            }
+        };
+
+        // Function to show and hide the sidebar
+        const toggleSidebar = () => {
+            sidebar.classList.toggle("close");
+        };
+
+        // If the window width is less than 800px, close the sidebar and remove hoverability and lock
+        if (window.innerWidth < 800) {
+            sidebar.classList.add("close");
+            sidebar.classList.remove("locked");
+            sidebar.classList.remove("hoverable");
+        }
+
+        // Adding event listeners to buttons and sidebar for the corresponding actions
+        sidebarLockBtn.addEventListener("click", toggleLock);
+        sidebar.addEventListener("mouseleave", hideSidebar);
+        sidebar.addEventListener("mouseenter", showSidebar);
+        sidebarOpenBtn.addEventListener("click", toggleSidebar);
+        sidebarCloseBtn.addEventListener("click", toggleSidebar);
+
+        // Show date and time
+        function displayDateAndTime() {
+            const currentDate = new Date();
+            const date = currentDate.toLocaleDateString();
+            const time = currentDate.toLocaleTimeString();
+            document.getElementById('date').textContent = date;
+            document.getElementById('time').textContent = time;
+        } setInterval(displayDateAndTime, 1000);
+
+        window.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                e.preventDefault(); // Prevent opening browser view source
+                alert("Sorry, you can't view source codes!");
+            }
+        });
+
+        function toggleAccordion(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.style.display = section.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+
+</html>

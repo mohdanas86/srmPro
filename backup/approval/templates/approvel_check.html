@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Staff apprisal data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,{{ favicon  }}">
+    <!-- Boxicons CSS -->
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <style>
+        /* Import Google font - Poppins */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eef5fe;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-color: white;
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        select {
+            background-color: #f2f2f2;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        select:focus {
+            border-color: #007bff;
+        }
+
+        .button {
+            background-color: #09548a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: white;
+            color: black;
+        }
+
+
+
+        /* Pre css */
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav_image {
+            display: flex;
+            min-width: 55px;
+            justify-content: center;
+        }
+
+        .nav_image img {
+            height: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 270px;
+            background: #fff;
+            padding: 15px 10px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.close {
+            width: calc(55px + 20px);
+        }
+
+        .logo_name {
+            font-size: 22px;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .logo_name,
+        .sidebar.close #lock-icon,
+        .sidebar.close #sidebar-close {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #lock-icon,
+        #sidebar-close {
+            padding: 10px;
+            color: #0b4d92;
+            font-size: 25px;
+            cursor: pointer;
+            margin-left: -4px;
+            transition: all 0.3s ease;
+        }
+
+        #lock-icon {
+            color: #aaa;
+        }
+
+        .sidebar.locked #lock-icon {
+            color: #0b4d92;
+        }
+
+        #sidebar-close {
+            display: none;
+            color: #333;
+        }
+
+        .menu_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 40px;
+            overflow-y: auto;
+            height: calc(100% - 82px);
+        }
+
+        .menu_container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu_title {
+            position: relative;
+            height: 50px;
+            width: 55px;
+        }
+
+        .menu_title .title {
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .title {
+            opacity: 0;
+        }
+
+        .menu_title .line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 3px;
+            width: 20px;
+            border-radius: 25px;
+            background: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .menu_title .line {
+            opacity: 0;
+        }
+
+        .sidebar.close .line {
+            opacity: 1;
+        }
+
+        .item {
+            list-style: none;
+        }
+
+        .link {
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: #707070;
+        }
+
+        .link:hover {
+            color: #fff;
+            background-color: #0b4d92;
+        }
+
+        .link span {
+            white-space: nowrap;
+        }
+
+        .link i {
+            height: 50px;
+            min-width: 55px;
+            display: flex;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .sidebar_profile {
+            padding-top: 15px;
+            margin-top: 15px;
+            gap: 15px;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar_profile .name {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .sidebar_profile .email {
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            max-width: 500px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 60%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 0 0 8px 8px;
+            justify-content: space-between;
+        }
+
+        #sidebar-open {
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 20px;
+            display: none;
+        }
+
+        .search_box {
+            height: 46px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #aaa;
+            outline: none;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .navbar img {
+            height: 40px;
+            width: 40px;
+            margin-left: 20px;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin: 50px auto;
+            background-color: #fff;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0b4d92;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 1100px) {
+            .navbar {
+                left: 65%;
+            }
+        }
+
+        @media screen and (min-width:992px) and (max-width:1023px) {
+            .section {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: 150px;
+                width: 50%;
+            }
+
+            .sectionM {
+                display: flex;
+                flex-direction: column;
+                justify-content: left;
+                align-items: center;
+            }
+        }
+
+        @media screen and (min-width:1023px) {
+            .section {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: 150px;
+                width: 50%;
+            }
+
+            .sectionM {
+                display: flex;
+                flex-direction: column;
+                justify-content: left;
+                align-items: center;
+            }
+
+            .section3 {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                height: 185px;
+                width: 50%;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .sidebar {
+                left: 0;
+                z-index: 1000;
+            }
+
+            .sidebar.close {
+                left: -100%;
+            }
+
+            #sidebar-close {
+                display: block;
+            }
+
+            #lock-icon {
+                display: none;
+            }
+
+            .navbar {
+                left: 0;
+                max-width: 100%;
+                transform: translateX(0%);
+            }
+
+            #sidebar-open {
+                display: block;
+            }
+
+            .section,
+            .section3 {
+                padding: 20px;
+                background-color: white;
+                margin: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .sectionM {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+
+        <header style="padding-left: 40px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0b4d92;
+        color: white;
+        padding: 20px;
+        text-align: center;">
+            <div class="profile-info" style="margin-left: 20px; ">
+                <h1>PROPOSED FACULTY MONTHLY PERFORMANCE SCORE</h1>
+                <p>Employee Name : {{ name }}</p>
+            </div>
+        </header>
+
+        <p style="text-align: center; padding: 10px;">Employee id : {{ data.Employee_id }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="sectionM">
+
+                {% if msg %}
+                <section class="section">
+                    <p style="color: green; text-align: center;">{{ msg }}</p>
+                </section>
+                {% endif %}
+
+
+
+                <section class="section" id="section1">
+                    <h1>1</h1>
+                    <label for="Academic_Score_cumulative">Academic_Score_cumulative:</label>
+                    <input type="text" id="username" name="Academic_Score_cumulative"
+                        value="{{data.Academic_Score_cumulative}}" readonly><br>
+                    <label for="Academic_Score_achived">Academic_Score_achived (T-100%):</label>
+                    <input type="text" id="username" name="Academic_Score_achived"
+                        value="{{data.Academic_Score_achived}}" readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.Acadaemic_proof}}', 1);">View Proof</a>
+
+                </section>
+
+                <section class="section" id="section2">
+                    <h1>2</h1>
+                    <label for="course_cumulative">course_cumulative:</label>
+                    <input type="text" id="username" name="course_cumulative" value="{{data.course_cumulative}}"
+                        readonly><br>
+                    <label for="course_achived">course_achived (T-2):</label>
+                    <input type="text" id="username" name="course_achived" value="{{data.course_achived}}" readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.course_proof}}', 2);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>3</h1>
+                    <label for="fdp_cumulative">fdp_cumulative:</label>
+                    <input type="text" id="username" name="fdp_cumulative" value="{{data.fdp_cumulative}}" readonly><br>
+                    <label for="fdp_week">fdp_week:</label>
+                    <input type="text" id="username" name="fdp_week" value="{{data.fdp_achived}}" readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.fdp_proof}}', 3);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>4</h1>
+                    <label for="Counselling_cumulative">Counselling_cumulative:</label>
+                    <input type="text" id="username" name="Counselling_cumulative"
+                        value="{{data.counselling_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Counselling_achived (T-100%):</label>
+                    <input type="text" id="username" name="Counselling_achived" value="{{data.counselling_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.counselling_proof}}', 4);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>5</h1>
+                    <label for="Counselling_cumulative">Student_Feedback_cumulative:</label>
+                    <input type="text" id="username" name="Student_Feedback_cumulative"
+                        value="{{data.Student_Feedback_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Student_Feedback_achived (T-10):</label>
+                    <input type="text" id="username" name="Student_Feedback_achived"
+                        value="{{data.Student_Feedback_achived}}" readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.Student_feedback_proof}}', 5);">View
+                        Proof</a>
+
+                </section>
+
+                <section class="section">
+                    <h1>6</h1>
+                    <label for="Counselling_cumulative">precption_cumulative:</label>
+                    <input type="text" id="username" name="precption_cumulative" value="{{data.precption_cumulative}}"
+                        readonly><br>
+                    <label for="Counselling_achived">precption_achived:</label>
+                    <input type="text" id="username" name="precption_cumulative" value="{{data.precption_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.precption_proof}}', 6);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>7</h1>
+                    <label for="Counselling_cumulative">Institutional_Coordinators_cumulative:</label>
+                    <input type="text" id="username" name="Institutional_Coordinators_cumulative"
+                        value="{{data.Institutional_Coordinators_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Institutional_Coordinators_achived (T-10):</label>
+                    <input type="text" id="username" name="Institutional_Coordinators_achived"
+                        value="{{data.Institutional_Coordinators_achived}}" readonly><br>
+                    <a href="javascript:void(0);"
+                        onclick="openPopup('{{data.Institutional_coordinators_proof}}', 7);">View Proof</a>
+                </section>
+
+                <section class="section3">
+                    <h1>8</h1>
+                    <label for="Counselling_cumulative">research_paper_cumulative:</label>
+                    <input type="text" id="username" name="research_paper_cumulative"
+                        value="{{data.research_paper_cumulative}}"><br>
+                    <label for="Counselling_cumulative">research_paper_achived:</label>
+                    <input type="text" id="username" name="no_of_Paper" value="{{data.research_paper_achived}}"
+                        readonly><br><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.research_paper_proof}}', 8);">View
+                        Proof</a>
+                </section>
+
+
+                <section class="section3">
+                    <h1>9</h1>
+                    <label for="Counselling_cumulative">paper_presentaion_cumulative:</label>
+                    <input type="text" id="username" name="paper_presentaion_cumulative"
+                        value="{{data.paper_presentaion_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">paper_presentaion_achived:</label>
+                    <input type="text" id="username" name="no_of_paper" value="{{data.paper_presentaion_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.paper_presentaion_proof}}', 9);">View
+                        Proof</a>
+                </section>
+
+                <section class="section3">
+                    <h1>10</h1>
+                    <label for="Counselling_cumulative">Research_project_sanctioned_cumulative:</label>
+                    <input type="text" id="username" name="Research_project_sanctioned_cumulative"
+                        value="{{data.Research_project_sanctioned_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Research_project_sanctioned_achived:</label>
+                    <input type="text" id="username" name="no_of_project"
+                        value="{{data.Research_project_sanctioned_achived}}" readonly><br>
+                    <a href="javascript:void(0);"
+                        onclick="openPopup('{{data.Research_project_sanctioned_proof}}', 10);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>11</h1>
+                    <label for="Counselling_cumulative">Research_proposal_cumulative:</label>
+                    <input type="text" id="username" name="Research_proposal_cumulative"
+                        value="{{data.Research_proposal_cumulative}}" readonly><br>
+                    <label for="Counselling_achived">Research_proposal_achived:</label>
+                    <input type="text" id="username" name="proposal" value="{{data.Research_proposal_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.research_proposal_proof}}', 11);">View
+                        Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>12</h1>
+                    <label for="Counselling_cumulative">Consultancy_cumulative:</label>
+                    <input type="text" id="username" name="Consultancy_cumulative"
+                        value="{{data.Consultancy_cumulative}}" readonly><br>
+                    <label for="Counselling_cumulative">Consultancy_achived:</label>
+                    <input type="text" id="username" name="No_of_project" value="{{data.Consultancy_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.Consultancy_proof}}', 12);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>13</h1>
+                    <label for="Counselling_cumulative">pedagogy_cumulative:</label>
+                    <input type="text" id="username" name="pedagogy_cumulative" value="{{data.pedagogy_cumulative}}"
+                        readonly><br>
+                    <label for="Counselling_cumulative">pedagogy_achived:</label>
+                    <input type="text" id="username" name="no_of_pedagogy" value="{{data.pedagogy_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.pedagogy_proof}}', 13);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>14</h1>
+                    <label for="Counselling_cumulative">inovative_cumulative:</label>
+                    <input type="text" id="username" name="inovative_cumulative" value="{{data.inovative_cumulative}}"
+                        readonly><br>
+                    <label for="Counselling_cumulative">inovative_achived:</label>
+                    <input type="text" id="username" name="number_of_inovative" value="{{data.inovative_achived}}"
+                        readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.inovative_proof}}', 14);">View Proof</a>
+                </section>
+
+                <section class="section">
+                    <h1>15</h1>
+                    <label for="Counselling_cumulative">E_Content_development_cumulative:</label>
+                    <input type="text" id="username" name="E_Content_development_cumulative"
+                        value="{{data.E_Content_development_cumulative}}" readonly><br>
+                    <label for="Counselling_cumulative">E_Content_development_achived:</label>
+                    <input type="text" id="username" name="no_Of_content_developement"
+                        value="{{data.E_Content_development_achived}}" readonly><br>
+                    <a href="javascript:void(0);" onclick="openPopup('{{data.E_content_proof}}', 15);">View Proof</a>
+                </section>
+
+
+                <section class="section" style="height: auto;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td><label>1</label></td>
+                            <td><label>Academic Marks</label></td>
+                            <td>{{am}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>2</label></td>
+                            <td><label>Research Marks</label></td>
+                            <td>{{rm}}</td>
+                        </tr>
+                        <tr>
+                            <td><label>3</label></td>
+                            <td><label>3. Co-curricular & Extension Marks</label></td>
+                            <td>{{cm}}</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="section" style="height: auto;">
+                    <b><label for="commitment_undertaking1">commitment_undertaking1:</label></b>
+                    <p>{{data.commitment_undertaking1}}</p><br>
+                    <b><label for="commitment_undertaking2">commitment_undertaking2:</label></b>
+                    <p>{{data.commitment_undertaking2}}</p><br>
+
+                    <b><label for="additional_information">additional_information:</label><br></b>
+                    <div style="text-align: center;">
+                        <textarea style="display: inline-block;" cols="50" rows="5"
+                            readonly>{{data.additional_information}}</textarea>
+                    </div>
+                </section>
+            </div><br>
+
+
+            <div style="display: flex; justify-content: center;">
+                <input type="submit" value="Approve" class="button" name="approve_button">&nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp;
+                <a href="{% url 'approval' %}" style="display: flex; justify-content: center; text-decoration: none;"
+                    class="button">Back</a>
+            </div>
+
+        </form><br><br><br>
+
+        <div class="popup" id="pdfPopup">
+            <button style="padding: 1px; margin: 4px;" onclick="closePopup();">Close</button>
+            <object id="pdfObject" type="application/pdf" width="100%" height="100%"></object>
+        </div>
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="sectionM" style="text-align: center;">
+                <section class="section">
+                    <label for="Counselling_cumulative">Query Box</label><br>
+                    <textarea id="comments" rows="2" cols="55" name="query_box"></textarea><br>
+                    <input type="submit" value="Sent" class="button" name="query_button">
+                </section>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        // Selecting the sidebar and buttons
+        const sidebar = document.querySelector(".sidebar");
+        const sidebarOpenBtn = document.querySelector("#sidebar-open");
+        const sidebarCloseBtn = document.querySelector("#sidebar-close");
+        const sidebarLockBtn = document.querySelector("#lock-icon");
+
+        // Function to toggle the lock state of the sidebar
+        const toggleLock = () => {
+            sidebar.classList.toggle("locked");
+            // If the sidebar is not locked
+            if (!sidebar.classList.contains("locked")) {
+                sidebar.classList.add("hoverable");
+                sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+            } else {
+                sidebar.classList.remove("hoverable");
+                sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+            }
+        };
+
+        // Function to hide the sidebar when the mouse leaves
+        const hideSidebar = () => {
+            if (sidebar.classList.contains("hoverable")) {
+                sidebar.classList.add("close");
+            }
+        };
+
+        // Function to show the sidebar when the mouse enter
+        const showSidebar = () => {
+            if (sidebar.classList.contains("hoverable")) {
+                sidebar.classList.remove("close");
+            }
+        };
+
+        // Function to show and hide the sidebar
+        const toggleSidebar = () => {
+            sidebar.classList.toggle("close");
+        };
+
+        // If the window width is less than 800px, close the sidebar and remove hoverability and lock
+        if (window.innerWidth < 800) {
+            sidebar.classList.add("close");
+            sidebar.classList.remove("locked");
+            sidebar.classList.remove("hoverable");
+        }
+
+        // Adding event listeners to buttons and sidebar for the corresponding actions
+        sidebarLockBtn.addEventListener("click", toggleLock);
+        sidebar.addEventListener("mouseleave", hideSidebar);
+        sidebar.addEventListener("mouseenter", showSidebar);
+        sidebarOpenBtn.addEventListener("click", toggleSidebar);
+        sidebarCloseBtn.addEventListener("click", toggleSidebar);
+
+        // Show date and time
+        function displayDateAndTime() {
+            const currentDate = new Date();
+            const date = currentDate.toLocaleDateString();
+            const time = currentDate.toLocaleTimeString();
+            document.getElementById('date').textContent = date;
+            document.getElementById('time').textContent = time;
+        } setInterval(displayDateAndTime, 1000);
+
+        window.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                e.preventDefault(); // Prevent opening browser view source
+                alert("Sorry, you can't view source codes!");
+            }
+        });
+
+        function openPopup(base64PDF, sectionIndex) {
+            var pdfObject = document.getElementById('pdfObject');
+            var pdfPopup = document.getElementById('pdfPopup');
+
+            if (base64PDF !== 'None') {
+                pdfObject.data = 'data:application/pdf;base64,' + base64PDF;
+                pdfPopup.style.display = 'block';
+                pdfPopup.dataset.sectionIndex = sectionIndex;
+            } else {
+                alert('Proof not uploaded for this section.');
+            }
+        }
+
+        function closePopup() {
+            var pdfObject = document.getElementById('pdfObject');
+            var pdfPopup = document.getElementById('pdfPopup');
+
+            pdfObject.data = '';  // Reset the content
+            pdfPopup.style.display = 'none';
+            pdfPopup.removeAttribute('data-section-index');
+        }
+
+
+    </script>
+</body>
+
+</html>

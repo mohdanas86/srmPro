@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,{{ favicon  }}">
+    <!-- Boxicons CSS -->
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <style>
+        /* Import Google font - Poppins */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 15px;
+            border-collapse: collapse;
+        }
+
+        tr {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+
+        p {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .card {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            color: #0b4d92;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .button {
+            display: block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Define styles for the columns */
+        .col {
+            flex: 0 0 calc(33.33% - 20px);
+            /* Adjust the width as needed, considering margin */
+            margin: 0 10px;
+            /* Add margin for spacing between columns */
+        }
+
+        /* Center the columns horizontally */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #eef5fe;
+        }
+
+        /* Pre css */
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav_image {
+            display: flex;
+            min-width: 55px;
+            justify-content: center;
+        }
+
+        .nav_image img {
+            height: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 270px;
+            background: #fff;
+            padding: 15px 10px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.close {
+            width: calc(55px + 20px);
+        }
+
+        /* .logo_items {
+            gap: 8px;
+        } */
+
+        .logo_name {
+            font-size: 22px;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .logo_name,
+        .sidebar.close #lock-icon,
+        .sidebar.close #sidebar-close {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #lock-icon,
+        #sidebar-close {
+            padding: 10px;
+            color: #0b4d92;
+            font-size: 25px;
+            cursor: pointer;
+            margin-left: -4px;
+            transition: all 0.3s ease;
+        }
+
+        #lock-icon {
+            color: #aaa;
+        }
+
+        .sidebar.locked #lock-icon {
+            color: #0b4d92;
+        }
+
+        #sidebar-close {
+            display: none;
+            color: #333;
+        }
+
+        .menu_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 40px;
+            overflow-y: auto;
+            height: calc(100% - 82px);
+        }
+
+        .menu_container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .menu_title {
+            position: relative;
+            height: 50px;
+            width: 55px;
+        }
+
+        .menu_title .title {
+            margin-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.close .title {
+            opacity: 0;
+        }
+
+        .menu_title .line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 3px;
+            width: 20px;
+            border-radius: 25px;
+            background: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .menu_title .line {
+            opacity: 0;
+        }
+
+        .sidebar.close .line {
+            opacity: 1;
+        }
+
+        .item {
+            list-style: none;
+        }
+
+        .link {
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: #707070;
+        }
+
+        .link:hover {
+            color: #fff;
+            background-color: #0b4d92;
+        }
+
+        .link span {
+            white-space: nowrap;
+        }
+
+        .link i {
+            height: 50px;
+            min-width: 55px;
+            display: flex;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .sidebar_profile {
+            padding-top: 15px;
+            margin-top: 15px;
+            gap: 15px;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar_profile .name {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .sidebar_profile .email {
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            max-width: 500px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 60%;
+            transform: translateX(-50%);
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 0 0 8px 8px;
+            justify-content: space-between;
+        }
+
+        #sidebar-open {
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 20px;
+            display: none;
+        }
+
+        .search_box {
+            height: 46px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #aaa;
+            outline: none;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .navbar img {
+            height: 40px;
+            width: 40px;
+            margin-left: 20px;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 1100px) {
+            .navbar {
+                left: 65%;
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            .sidebar {
+                left: 0;
+                z-index: 1000;
+            }
+
+            .sidebar.close {
+                left: -100%;
+            }
+
+            #sidebar-close {
+                display: block;
+            }
+
+            #lock-icon {
+                display: none;
+            }
+
+            .navbar {
+                left: 0;
+                max-width: 100%;
+                transform: translateX(0%);
+            }
+
+            #sidebar-open {
+                display: block;
+            }
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-height: 90vh;
+            /* Set the maximum height */
+            overflow-y: auto;
+        }
+
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .no-underscore {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div style="text-align: center;">
+
+        <header style="padding-left: 40px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0b4d92;
+        color: white;
+        padding: 20px;">
+            <div class="profile-picture">
+                <img src="data:image/png;base64,{{ data.Passport_size_photo }}" alt="Click to select file" style="border-radius: 50%;
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border: 4px solid white;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+            </div>
+            <div class="profile-info" style="margin-left: 20px; ">
+                <h1>{{ data.name_of_faculty }}</h1>
+                <p>{{ data.designation }}</p>
+                <p>{{ data.department }}</p>
+            </div>
+        </header>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="sectionM">
+                    <div class="cards-container">
+                        <div class="card" style="height: auto;">
+                            <h2>Personal Detilas</h2>
+                            <table>
+                                <tr>
+                                    <td>Employee ID:</td>
+                                    <td>{{data.employee_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender:</td>
+                                    <td>{{data.gender}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date of Birth:</td>
+                                    <td>{{data.date_of_birth}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Year of joining:</td>
+                                    <td>{{data.year_of_joining}}</td>
+                                </tr>
+                            </table>
+                            <a href="javascript:void(0);" onclick="openPopup('popup1')" class="button">Show More</a>
+                        </div>
+
+                        <div class="card">
+                            <h2>Qualification Detilas</h2>
+                            <table>
+                                <tr>
+                                    <td>UG:</td>
+                                    <td>{{data.ug}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Period of study:</td>
+                                    <td>{{data.ug_period}}</td>
+                                </tr>
+                                <tr>
+                                    <td>PG:</td>
+                                    <td>{{data.pg}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Period of study:</td>
+                                    <td>{{data.pg_period}}</td>
+                                </tr>
+                            </table>
+                            <a href="javascript:void(0);" onclick="openPopup('popup2')" class="button">Show More</a>
+                        </div>
+
+                        <div class="card">
+                            <h2>Doctorate Detilas</h2>
+                            <table>
+                                <tr>
+                                    <td>Name of cource:</td>
+                                    <td>{{data.phd}}</td>
+                                </tr>
+                                <tr>
+                                    <td>University:</td>
+                                    <td>{{data.phd_university}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Period of study:</td>
+                                    <td>{{data.phd_duration}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Year of completion:</td>
+                                    <td>{{data.year_of_completion}}</td>
+                                </tr>
+                            </table>
+                            <a href="javascript:void(0);" onclick="openPopup('popup3')" class="button">Show More</a>
+                        </div>
+
+                        <div class="card">
+                            <h2>Research Detilas</h2>
+                            <table>
+                                <tr>
+                                    <td>Research Area:</td>
+                                    <td class="initials" data-fullname="{{data.research_area}}">{{data.research_area}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Journal paper:</td>
+                                    <td>{{data.total_indexed_papers}}</td>
+                                </tr>
+                                <tr>
+                                    <td>UGC Care:</td>
+                                    <td>{{data.ugc_care_papers}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Scopus Indexed:</td>
+                                    <td>{{data.scopus_papers}}</td>
+                                </tr>
+                            </table>
+                            <a href="javascript:void(0);" onclick="openPopup('popup4')" class="button">Show More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <a href="javascript:void(0);" onclick="goBack()"
+                    style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;"
+                    class="button">Back</a>
+            </div>
+
+            <!-- <div style="display: flex; justify-content: center;">
+                {% if d == 'HOD' %}
+                    <a href="{% url 'staff' %}"
+                        style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;"
+                        class="button">Back</a>
+                {% else %}
+                    <a href="{% url 'departments' %}"
+                        style="display: flex; justify-content: center; text-decoration: none; margin-bottom: 20px;"
+                        class="button">Back</a>
+                {% endif %}
+
+            </div> -->
+
+            <div id="popup1" class="popup">
+                <span class="close" onclick="closePopup('popup1')">&times;</span>
+                <h2>Personal Detilas</h2>
+                <table>
+
+                    <tr>
+                        <td> Campus: </td>
+                        <td> {{data.campus}} </td>
+                    </tr>
+                    <tr>
+                        <td> College Name: </td>
+                        <td> {{data.college_name}} </td>
+                    </tr>
+                    <tr>
+                        <td> Email Address: </td>
+                        <td> {{data.email_address}} </td>
+                    </tr>
+                    <tr>
+                        <td> Employee Id: </td>
+                        <td> {{data.employee_id}} </td>
+                    </tr>
+                    <tr>
+                        <td> Department: </td>
+                        <td> {{data.department}} </td>
+                    </tr>
+                    <tr>
+                        <td> Name Of Faculty: </td>
+                        <td> {{data.name_of_faculty}} </td>
+                    </tr>
+                    <tr>
+                        <td> Gender: </td>
+                        <td> {{data.gender}} </td>
+                    </tr>
+                    <tr>
+                        <td> Date Of Birth: </td>
+                        <td> {{data.date_of_birth}} </td>
+                    </tr>
+                    <tr>
+                        <td> Designation: </td>
+                        <td> {{data.designation}} </td>
+                    </tr>
+                    <tr>
+                        <td> Year Of Joining: </td>
+                        <td> {{data.year_of_joining}} </td>
+                    </tr>
+                    <tr>
+                        <td> Srm Experience: </td>
+                        <td> {{data.srm_experience}} </td>
+                    </tr>
+                    <tr>
+                        <td> Other College Experience: </td>
+                        <td> {{data.other_college_experience}} </td>
+                    </tr>
+                    <tr>
+                        <td> Industry Experience: </td>
+                        <td> {{data.industry_experience}} </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="popup2" class="popup">
+                <span class="close" onclick="closePopup('popup2')">&times;</span>
+                <h2>Qualification Detilas</h2><br>
+                <h4>Undergraduate</h4><br>
+                <table>
+                    <tr>
+                        <td> Ug: </td>
+                        <td> {{data.ug}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug University: </td>
+                        <td> {{data.ug_university}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Place: </td>
+                        <td> {{data.ug_place}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Percentage: </td>
+                        <td> {{data.ug_percentage}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Mode: </td>
+                        <td> {{data.ug_mode}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Parttime Mode: </td>
+                        <td> {{data.ug_parttime_mode}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Period: </td>
+                        <td> {{data.ug_period}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Class: </td>
+                        <td> {{data.ug_class}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Ur: </td>
+                        <td> {{data.ug_ur}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ug Cr: </td>
+                        <td> {{data.ug_cr}} </td>
+                    </tr>
+                </table><br>
+                <h4>Postgraduate</h4><br>
+                <table>
+                    <tr>
+                        <td> Pg: </td>
+                        <td> {{data.pg}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg University: </td>
+                        <td> {{data.pg_university}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Place: </td>
+                        <td> {{data.pg_place}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Percentage: </td>
+                        <td> {{data.pg_percentage}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Mode: </td>
+                        <td> {{data.pg_mode}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Parttime Mode: </td>
+                        <td> {{data.pg_parttime_mode}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Period: </td>
+                        <td> {{data.pg_period}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Class: </td>
+                        <td> {{data.pg_class}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Ur: </td>
+                        <td> {{data.pg_ur}} </td>
+                    </tr>
+                    <tr>
+                        <td> Pg Cr: </td>
+                        <td> {{data.pg_cr}} </td>
+                    </tr>
+                </table><br>
+                {% if data.diploma == 'yes'%}
+                <h4>Diploma</h4><br>
+                <table>
+                    <tr>
+                        <td> Name Of Course: </td>
+                        <td> {{data.name_of_course}} </td>
+                    </tr>
+                    <tr>
+                        <td> University For Course: </td>
+                        <td> {{data.university_for_course}} </td>
+                    </tr>
+                    <tr>
+                        <td> Diploma Percentage: </td>
+                        <td> {{data.diploma_percentage}} </td>
+                    </tr>
+                    <tr>
+                        <td> Diploma Class: </td>
+                        <td> {{data.diploma_class}} </td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            <div id="popup3" class="popup">
+                <span class="close" onclick="closePopup('popup3')">&times;</span>
+                <h2>Doctor of Philosophy Detilas</h2><br>
+                <table>
+                    <tr>
+                        <td> Phd: </td>
+                        <td> {{data.phd}} </td>
+                    </tr>
+                    <tr>
+                        <td> Phd University: </td>
+                        <td> {{data.phd_university}} </td>
+                    </tr>
+                    <tr>
+                        <td> Phd Place: </td>
+                        <td> {{data.phd_place}} </td>
+                    </tr>
+                    <tr>
+                        <td> Phd Duration: </td>
+                        <td> {{data.phd_duration}} </td>
+                    </tr>
+                    <tr>
+                        <td> Phd Percentage: </td>
+                        <td> {{data.phd_percentage}} </td>
+                    </tr>
+                    <tr>
+                        <td> Year Of Completion: </td>
+                        <td> {{data.year_of_completion}} </td>
+                    </tr>
+                    <tr>
+                        <td> Phd Mode: </td>
+                        <td> {{data.phd_mode}} </td>
+                    </tr>
+                    <tr>
+                        <td> Phd Fulltime Mode: </td>
+                        <td> {{data.phd_fulltime_mode}} </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="popup4" class="popup">
+                <span class="close" onclick="closePopup('popup4')">&times;</span>
+                <h2>Research Detials</h2><br>
+                <h4>Undergraduate</h4><br>
+                <table>
+                    <tr>
+                        <td> Research Area: </td>
+                        <td> {{data.research_area}} </td>
+                    </tr>
+                    <tr>
+                        <td> Total Indexed Papers: </td>
+                        <td> {{data.total_indexed_papers}} </td>
+                    </tr>
+                    <tr>
+                        <td> Ugc Care Papers: </td>
+                        <td> {{data.ugc_care_papers}} </td>
+                    </tr>
+                    <tr>
+                        <td> Scopus Papers: </td>
+                        <td> {{data.scopus_papers}} </td>
+                    </tr>
+                    <tr>
+                        <td> Web Of Science Papers: </td>
+                        <td> {{data.web_of_science_papers}} </td>
+                    </tr>
+                    <tr>
+                        <td> Sci: </td>
+                        <td> {{data.sci}} </td>
+                    </tr>
+                    <tr>
+                        <td> National Conf Presented: </td>
+                        <td> {{data.national_conf_presented}} </td>
+                    </tr>
+                    <tr>
+                        <td> Conference Proceedings Isbn: </td>
+                        <td> {{data.conference_proceedings_isbn}} </td>
+                    </tr>
+                </table><br>
+                <h2>Patent</h2><br>
+                {% for patent_key, patent_data in data.patent_detials.items %}
+                <h5 class="no-underscore">{{patent_key}}</h5>
+                <table>
+                    {% for key, value in patent_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>Book</h2><br>
+                {% for book_key, book_data in data.book_detials.items %}
+                <h5 class="no-underscore">{{book_key}}</h5>
+                <table>
+                    {% for key, value in book_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>FDP</h2><br>
+                {% for fdp_key, fdp_data in data.fdp_detials.items %}
+                <h5 class="no-underscore">{{fdp_key}}</h5>
+                <table>
+                    {% for key, value in fdp_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>Workshop </h2><br>
+                {% for fdp_key, fdp_data in data.workshop_detials.items %}
+                <h5 class="no-underscore">{{fdp_key}}</h5>
+                <table>
+                    {% for key, value in fdp_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>Project</h2><br>
+                {% for ws_key, ws_data in data.project_detials.items %}
+                <h5 class="no-underscore">{{ws_key}}</h5>
+                <table>
+                    {% for key, value in ws_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>Project sanctioned</h2><br>
+                {% for ws_key, ws_data in data.project_sanctioned_detials.items %}
+                <h5 class="no-underscore">{{ws_key}}</h5>
+                <table>
+                    {% for key, value in ws_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>Award</h2><br>
+                {% for ws_key, ws_data in data.award_detials.items %}
+                <h5 class="no-underscore">{{ws_key}}</h5>
+                <table>
+                    {% for key, value in ws_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                <h2>Membership in professional bodies</h2><br>
+                {% for ws_key, ws_data in data.Membership_in_professional_bodies_Detials.items %}
+                <h5 class="no-underscore">{{ws_key}}</h5>
+                <table>
+                    {% for key, value in ws_data.items %}
+                    <tr>
+                        <td class="no-underscore">{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endfor %} <br>
+
+                {% if data.Recognised_as_Research_Supervisor == 'yes'%}
+                <h4>Recognised as Research Supervisor</h4><br>
+                <table>
+                    <tr>
+                        <td> Recognized By: </td>
+                        <td> {{data.recognized_by}} </td>
+                    </tr>
+                    <tr>
+                        <td> Year Recognition: </td>
+                        <td> {{data.year_recognition}} </td>
+                    </tr>
+                    <tr>
+                        <td> Scholars Completed: </td>
+                        <td> {{data.scholars_completed}} </td>
+                    </tr>
+                    <tr>
+                        <td> Scholars Guiding: </td>
+                        <td> {{data.scholars_guiding}} </td>
+                    </tr>
+                    <tr>
+                        <td> Full Time Scholars: </td>
+                        <td> {{data.full_time_scholars}} </td>
+                    </tr>
+                    <tr>
+                        <td> Part Time Scholars: </td>
+                        <td> {{data.part_time_scholars}} </td>
+                    </tr>
+                    <tr>
+                        <td> Internal Scholars: </td>
+                        <td> {{data.internal_scholars}} </td>
+                    </tr>
+                    <tr>
+                        <td> External Scholars: </td>
+                        <td> {{data.external_scholars}} </td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            <script>
+
+                function goBack() {
+                    window.history.back();
+                }
+                document.addEventListener('DOMContentLoaded', function () {
+                    var noUnderscoreElements = document.querySelectorAll('.no-underscore');
+                    noUnderscoreElements.forEach(function (element) {
+                        element.textContent = element.textContent.replace(/_/g, ' ');
+                    });
+                });
+                function openPopup(popupId) {
+                    document.getElementById(popupId).style.display = "block";
+                }
+
+                function closePopup(popupId) {
+                    document.getElementById(popupId).style.display = "none";
+                }
+                // Selecting the sidebar and buttons
+                const sidebar = document.querySelector(".sidebar");
+                const sidebarOpenBtn = document.querySelector("#sidebar-open");
+                const sidebarCloseBtn = document.querySelector("#sidebar-close");
+                const sidebarLockBtn = document.querySelector("#lock-icon");
+
+                // Function to toggle the lock state of the sidebar
+                const toggleLock = () => {
+                    sidebar.classList.toggle("locked");
+                    // If the sidebar is not locked
+                    if (!sidebar.classList.contains("locked")) {
+                        sidebar.classList.add("hoverable");
+                        sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+                    } else {
+                        sidebar.classList.remove("hoverable");
+                        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+                    }
+                };
+
+                // Function to hide the sidebar when the mouse leaves
+                const hideSidebar = () => {
+                    if (sidebar.classList.contains("hoverable")) {
+                        sidebar.classList.add("close");
+                    }
+                };
+
+                // Function to show the sidebar when the mouse enter
+                const showSidebar = () => {
+                    if (sidebar.classList.contains("hoverable")) {
+                        sidebar.classList.remove("close");
+                    }
+                };
+
+                // Function to show and hide the sidebar
+                const toggleSidebar = () => {
+                    sidebar.classList.toggle("close");
+                };
+
+                // If the window width is less than 800px, close the sidebar and remove hoverability and lock
+                if (window.innerWidth < 800) {
+                    sidebar.classList.add("close");
+                    sidebar.classList.remove("locked");
+                    sidebar.classList.remove("hoverable");
+                }
+
+                // Adding event listeners to buttons and sidebar for the corresponding actions
+                sidebarLockBtn.addEventListener("click", toggleLock);
+                sidebar.addEventListener("mouseleave", hideSidebar);
+                sidebar.addEventListener("mouseenter", showSidebar);
+                sidebarOpenBtn.addEventListener("click", toggleSidebar);
+                sidebarCloseBtn.addEventListener("click", toggleSidebar);
+
+                // Show date and time
+                function displayDateAndTime() {
+                    const currentDate = new Date();
+                    const date = currentDate.toLocaleDateString();
+                    const time = currentDate.toLocaleTimeString();
+                    document.getElementById('date').textContent = date;
+                    document.getElementById('time').textContent = time;
+                } setInterval(displayDateAndTime, 1000);
+
+                window.addEventListener('contextmenu', function (e) {
+                    e.preventDefault();
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                        e.preventDefault(); // Prevent opening browser view source
+                        alert("Sorry, you can't view source codes!");
+                    }
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var cells = document.querySelectorAll('.initials');
+
+                    cells.forEach(function (cell) {
+                        var fullName = cell.getAttribute('data-fullname');
+                        var initials = getInitials(fullName);
+                        cell.innerHTML = '<span>' + initials + '</span>';
+                    });
+
+                    function getInitials(fullName) {
+                        return fullName.split(' ').map(function (word) {
+                            return word.charAt(0).toUpperCase();
+                        }).join('');
+                    }
+                });
+
+            </script>
+</body>
+
+</html>
